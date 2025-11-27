@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Márcio Maker — Portfólio 4.0</title>
+
+<!-- GSAP -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+<!-- Tilt -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+<style>
+/* ----------------------
+   THEME + RESET
+   ----------------------*/
+:root{ --bg:#0b0f17; --text:#fff; --card:#0f1724; --accent:#4f8cff; --muted:#9aa3b2; --glass:rgba(255,255,255,0.04); }
+.light{ --bg:#f5f7fb; --text:#0b1220; --card:#ffffff; --accent:#0b6cff; --muted:#6b7280; --glass:rgba(0,0,0,0.04); }
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#app{height:100%}
+body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); transition:background .28s,color .28s; -webkit-font-smoothing:antialiased;}
+.container{max-width:1100px;margin:0 auto;padding:16px}
+
+/* ----------------------
+   HEADER (MOBILE-FIRST)
+   ----------------------*/
+header{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:8px 16px;z-index:1200;background:linear-gradient(180deg,var(--glass),transparent);backdrop-filter:blur(6px)}
+.brand{display:flex;gap:10px;align-items:center}
+.brand h1{font-size:16px}
+.brand small{font-size:12px;color:var(--muted)}
+
+#desktopNav{display:none;gap:14px;align-items:center}
+#desktopNav a{color:var(--text);text-decoration:none;padding:8px;border-radius:8px}
+#desktopNav a:hover{background:var(--glass)}
+
+#hamburger{display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:8px;border-radius:8px}
+#hamburger span{width:22px;height:2px;background:var(--text);display:block;border-radius:2px}
+
+/* MOBILE MENU (slide down) */
+#mobileMenu{display:none;position:fixed;left:12px;right:12px;top:72px;background:var(--card);padding:14px;border-radius:12px;box-shadow:0 12px 30px rgba(2,6,23,.6);flex-direction:column;gap:8px;z-index:1150}
+#mobileMenu a{padding:10px;border-radius:8px;text-decoration:none;color:var(--text)}
+
+/* ----------------------
+   MAIN LAYOUT
+   ----------------------*/
+main{padding-top:90px;padding-bottom:48px}
+.hero{padding:28px 12px;border-radius:14px;margin:10px 0;background:linear-gradient(180deg, rgba(79,140,255,0.06), transparent)}
+.avatar{width:120px;height:120px;border-radius:18px;object-fit:cover;display:block;margin:0 auto}
+.title{font-size:22px;margin-top:12px;text-align:center}
+.lead{color:var(--muted);text-align:center;margin-top:8px}
+
+/* GRID responsive */
+.grid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:720px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,.45);transition:transform .24s,box-shadow .24s}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 46px rgba(2,6,23,.6)}
+.case-media{width:100%;height:160px;border-radius:8px;object-fit:cover}
+
+/* CTA */
+.btn{background:var(--accent);color:#fff;padding:10px 12px;border-radius:10px;border:0;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.06)}
+
+/* CAROUSEL 3D */
+.carousel{perspective:1200px;position:relative;padding:18px}
+.carousel-track{display:flex;gap:16px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.22,.9,.25,1)}
+.carousel-item{min-width:260px;background:linear-gradient(180deg,rgba(0,0,0,.04),transparent);border-radius:12px;padding:12px;backface-visibility:hidden;box-shadow:0 8px 30px rgba(2,6,23,.5)}
+.carousel-controls{display:flex;gap:8px;position:absolute;right:16px;top:12px}
+
+/* PARALLAX */
+.parallax{height:220px;border-radius:12px;background-size:cover;background-position:center;margin:10px 0}
+
+/* DASHBOARD */
+.admin-grid{display:grid;gap:12px;grid-template-columns:1fr;}
+@media(min-width:900px){.admin-grid{grid-template-columns:2fr 1fr}}
+.kpi{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--card);border-radius:10px}
+.kpi h3{font-size:20px}
+.bar{height:10px;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden}
+.bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#6dd2ff);width:40%}
+
+/* ROUTES (page wrapper) */
+.page{display:none}
+.page.active{display:block}
+
+/* FOOTER */
+footer{padding:24px;text-align:center;color:var(--muted)}
+
+/* small touches */
+.lead-strong{color:var(--text);font-weight:600}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#6dd2ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700">MM</div>
+      <div>
+        <h1>Márcio Maker</h1>
+        <small>Full Stack • PWA • IA</small>
+      </div>
+    </div>
+
+    <nav id="desktopNav">
+      <a href="#/home" data-link>Home</a>
+      <a href="#/projetos" data-link>Projetos</a>
+      <a href="#/blog" data-link>Blog</a>
+      <a href="#/vendas" data-link>Vendas</a>
+      <a href="#/dashboard" data-link>Admin</a>
+      <button class="btn" id="themeBtn" aria-pressed="false">Tema</button>
+    </nav>
+
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn" id="installBtn" style="display:none">Instalar</button>
+      <div id="hamburger" aria-label="Menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" role="menu" aria-hidden="true">
+    <a href="#/home" data-link>Home</a>
+    <a href="#/projetos" data-link>Projetos</a>
+    <a href="#/blog" data-link>Blog</a>
+    <a href="#/vendas" data-link>Vendas</a>
+    <a href="#/dashboard" data-link>Admin</a>
+  </div>
+
+  <main class="container">
+
+    <!-- PARALLAX HERO -->
+    <div class="parallax" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=60')"></div>
+
+    <!-- ROUTED PAGES -->
+    <section id="home" class="page active">
+      <div class="hero card" data-tilt>
+        <img class="avatar" src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=400&q=60" alt="Márcio Maker">
+        <h2 class="title">Criando produtos que encantam e vendem</h2>
+        <p class="lead">PWA, IA, interfaces modernas e experiências de valor.</p>
+      </div>
+
+      <h3 style="margin-top:18px">Projetos rápidos</h3>
+      <div class="carousel card" id="carousel">
+        <div class="carousel-track" id="track">
+          <!-- carousel items -->
+          <div class="carousel-item" data-tilt>
+            <h4>PWA High Tech</h4>
+            <p class="lead-strong">Offline-first, rápido e instalável.</p>
+            <img class="case-media" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=60" alt="">
+          </div>
+
+          <div class="carousel-item" data-tilt>
+            <h4>Dashboard Inteligente</h4>
+            <p class="lead-strong">Métricas e insights com IA.</p>
+            <img class="case-media" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=900&q=60" alt="">
+          </div>
+
+          <div class="carousel-item" data-tilt>
+            <h4>Design & Conteúdo</h4>
+            <p class="lead-strong">Conversão e storytelling.</p>
+            <img class="case-media" src="https://images.unsplash.com/photo-1505238680356-667803448bb6?auto=format&fit=crop&w=900&q=60" alt="">
+          </div>
+
+          <div class="carousel-item" data-tilt>
+            <h4>IA Creator Studio</h4>
+            <p class="lead-strong">Ferramentas criativas com LLMs.</p>
+            <img class="case-media" src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=900&q=60" alt="">
+          </div>
+        </div>
+        <div class="carousel-controls">
+          <button class="btn" id="cprev">◀</button>
+          <button class="btn" id="cnext">▶</button>
+        </div>
+      </div>
+
+      <section style="margin-top:18px">
+        <h3>Serviços</h3>
+        <div class="grid" style="margin-top:12px">
+          <div class="card" data-tilt><h4>PWA Completo</h4><p class="lead-strong">Instalável, offline, rápido.</p></div>
+          <div class="card" data-tilt><h4>IA & Automação</h4><p class="lead-strong">Chatbots, prompts e fluxos.</p></div>
+          <div class="card" data-tilt><h4>Design Premium</h4><p class="lead-strong">UI moderna e conversão.</p></div>
+          <div class="card" data-tilt><h4>Conteúdo & Cursos</h4><p class="lead-strong">Materiais e aulas.</p></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- PROJETOS PAGE -->
+    <section id="projetos" class="page">
+      <h2>Projetos</h2>
+      <p class="lead">Lista com descrições, stacks e outcomes.</p>
+      <div class="grid" style="margin-top:12px">
+        <div class="card"><h4>Portfólio 4.0</h4><p class="lead-strong">Site PWA com animações, temas e dashboard.</p></div>
+        <div class="card"><h4>Aha! Academy</h4><p class="lead-strong">Plataforma de cursos offline-first.</p></div>
+        <div class="card"><h4>Social PWA</h4><p class="lead-strong">Feed com cache inteligente.</p></div>
+        <div class="card"><h4>Creator Studio</h4><p class="lead-strong">Ferramentas de criação com IA.</p></div>
+      </div>
+    </section>
+
+    <!-- BLOG PAGE -->
+    <section id="blog" class="page">
+      <h2>Blog</h2>
+      <p class="lead">Artigos sobre PWA, IA, UX e performance.</p>
+      <div style="margin-top:12px" class="grid">
+        <div class="card"><h4>Como criar um PWA</h4><p class="lead-strong">Checklist e exemplos práticos.</p></div>
+        <div class="card"><h4>GSAP na prática</h4><p class="lead-strong">Animações que performam.</p></div>
+      </div>
+    </section>
+
+    <!-- VENDAS PAGE -->
+    <section id="vendas" class="page">
+      <h2>Página de Vendas</h2>
+      <div class="card">
+        <h3>Serviço: PWA + IA</h3>
+        <p class="lead">Pacotes, entregáveis e preços (exemplos fictícios).</p>
+        <ul>
+          <li>Pacote Básico — Landing + PWA — 2 semanas</li>
+          <li>Pacote Profissional — PWA + Dashboard — 4 semanas</li>
+          <li>Pacote Premium — IA integrada + Treinamento — 6 semanas</li>
+        </ul>
+        <a class="btn" href="https://wa.me/5511999999999?text=Ol%C3%A1%20Marcio%2C%20quero%20um%20or%C3%A7amento" target="_blank">Fazer orçamento</a>
+      </div>
+    </section>
+
+    <!-- ADMIN DASHBOARD -->
+    <section id="dashboard" class="page">
+      <h2>Dashboard Admin — Demo</h2>
+      <div class="admin-grid" style="margin-top:12px">
+        <div>
+          <div class="kpi"><h3>Visitas (30d)</h3><strong id="visits">12.439</strong><div class="bar"><i style="width:70%"></i></div></div>
+          <div class="kpi" style="margin-top:10px"><h3>Conversões</h3><strong id="convs">312</strong><div class="bar"><i style="width:36%"></i></div></div>
+          <div class="card" style="margin-top:10px"><h4>Últimos Projetos</h4><ul><li>Portfólio 4.0</li><li>Aha! Academy</li><li>Creator Studio</li></ul></div>
+        </div>
+        <div>
+          <div class="card"><h4>Métricas Rápidas</h4><p class="lead-strong">Sessões, CTR, tempo médio.</p></div>
+          <div class="card" style="margin-top:10px"><h4>Atividades</h4><p class="lead-strong">Deploys, atualizações e testes A/B.</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>© 2025 — Márcio Maker • Full Stack, IA & PWA</footer>
+</div>
+
+<!-- Simple Service Worker registration (sw.js must exist on server) -->
+<script>
+// THEME PERSISTENCE
+const themeBtn = document.getElementById('themeBtn');
+const prefers = localStorage.getItem('theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : null);
+if(prefers) document.body.classList.toggle('light', prefers === 'light');
+themeBtn.onclick = ()=>{
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  themeBtn.setAttribute('aria-pressed', String(isLight));
+};
+
+// RESPONSIVE NAV
+const ham = document.getElementById('hamburger');
+const mob = document.getElementById('mobileMenu');
+const desktopNav = document.getElementById('desktopNav');
+function syncNav(){
+  if(window.innerWidth >= 920){ desktopNav.style.display = 'flex'; mob.style.display = 'none'; }
+  else{ desktopNav.style.display = 'none'; }
+}
+window.addEventListener('resize', syncNav);
+syncNav();
+ham.addEventListener('click', ()=>{
+  const open = mob.style.display === 'flex';
+  mob.style.display = open ? 'none' : 'flex';
+  mob.setAttribute('aria-hidden', String(open));
+});
+
+// HASH ROUTER (simple)
+const routes = ['home','projetos','blog','vendas','dashboard'];
+function routeTo(hash){
+  const name = (hash||'#/home').replace('#/','');
+  routes.forEach(r=>{
+    const el = document.getElementById(r);
+    if(el) el.classList.toggle('active', r===name);
+  });
+}
+window.addEventListener('hashchange', ()=> routeTo(location.hash));
+if(!location.hash) location.hash = '#/home'; else routeTo(location.hash);
+
+// LINK HANDLING (navigate + close mobile menu)
+document.querySelectorAll('[data-link]').forEach(a=>{
+  a.addEventListener('click', ()=>{ if(window.innerWidth < 920){ mob.style.display='none'; } });
+});
+
+// VANILLA TILT init
+VanillaTilt.init(document.querySelectorAll('[data-tilt]'), { max:12, speed:300, glare:true, 'max-glare':.15 });
+
+// GSAP ENHANCEMENTS
+if(window.gsap){
+  gsap.from('.hero',{opacity:0,y:20,duration:.9,ease:'power2.out'});
+  gsap.from('.card',{opacity:0,y:14,duration:.9,stagger:0.06,ease:'power2.out'});
+  // subtle floating for avatar
+  gsap.to('.avatar',{y:-6,repeat:-1,yoyo:true,duration:3,ease:'sine.inOut'});
+}
+
+// CAROUSEL 3D LOGIC
+const track = document.getElementById('track');
+let cIndex = 0;
+const items = Array.from(track.children);
+function updateCarousel(){
+  const mid = Math.floor(items.length/2);
+  const offset = cIndex - mid;
+  const gap = 280; // approximate item width including gap
+  // compute transform
+  items.forEach((it,i)=>{
+    const pos = i - cIndex;
+    const abs = Math.abs(pos);
+    const scale = Math.max(.78, 1 - abs*0.12);
+    const z = -abs*120;
+    const x = pos*gap;
+    it.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${scale})`;
+    it.style.opacity = abs>3 ? 0 : 1;
+  });
+}
+updateCarousel();
+document.getElementById('cprev').addEventListener('click', ()=>{ cIndex = (cIndex-1+items.length)%items.length; updateCarousel();});
+document.getElementById('cnext').addEventListener('click', ()=>{ cIndex = (cIndex+1)%items.length; updateCarousel();});
+setInterval(()=>{ cIndex = (cIndex+1)%items.length; updateCarousel(); },5000);
+
+// ADMIN DEMO NUMBERS (fake dynamic)
+setTimeout(()=>{ document.getElementById('visits').textContent = '14.782'; document.getElementById('convs').textContent = '342'; },1200);
+
+// PWA install prompt handling (deferred)
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').style.display='inline-block';
+});
+document.getElementById('installBtn').addEventListener('click', async ()=>{
+  if(!deferredPrompt) return; deferredPrompt.prompt(); const choice = await deferredPrompt.userChoice; deferredPrompt = null; document.getElementById('installBtn').style.display='none';
+});
+
+// REGISTER SW (best-effort; sw.js must be provided on server)
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(()=>console.log('SW registered')).catch(()=>console.log('SW failed'));
+}
+
+</script>
+</body>
+</html>

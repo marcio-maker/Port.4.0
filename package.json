@@ -1,0 +1,51 @@
+{
+  "name": "marcio-maker-portfolio",
+  "version": "4.0.0",
+  "description": "Portfólio profissional PWA de Márcio Maker - Full Stack Developer especializado em PWA, IA e experiências digitais modernas",
+  "main": "app.js",
+  "scripts": {
+    "start": "http-server -p 8080 -c-1",
+    "build": "echo 'No build process needed for static site'",
+    "dev": "http-server -p 3000 -c-1",
+    "deploy": "echo 'Add your deployment command here'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "pwa",
+    "portfolio",
+    "web-development",
+    "javascript",
+    "css",
+    "html",
+    "responsive-design",
+    "progressive-web-app"
+  ],
+  "author": {
+    "name": "Márcio Maker",
+    "email": "contato@marciomaker.com",
+    "url": "https://marciomaker.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marciomaker/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marciomaker/portfolio/issues"
+  },
+  "homepage": "https://marciomaker.com",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "pwa": {
+    "name": "Márcio Maker Portfolio",
+    "short_name": "Márcio Maker",
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#4f8cff",
+    "background_color": "#0b0f17"
+  }
+}

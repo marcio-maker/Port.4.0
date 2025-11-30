@@ -12,15 +12,15 @@
   "categories": ["business", "productivity", "utilities"],
   "icons": [
     {
-      "src": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=192&q=60",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=512&q=60",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
@@ -29,13 +29,15 @@
       "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=640&q=60",
       "sizes": "640x320",
       "type": "image/jpeg",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "label": "Página inicial do portfólio"
     },
     {
       "src": "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=540&q=60",
       "sizes": "540x720",
       "type": "image/jpeg",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Detalhes do projeto"
     }
   ],
   "related_applications": [],
@@ -48,9 +50,9 @@
       "url": "/#/projetos",
       "icons": [
         {
-          "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=96&q=60",
+          "src": "/icons/projects-96x96.png",
           "sizes": "96x96",
-          "type": "image/jpeg"
+          "type": "image/png"
         }
       ]
     },
@@ -61,11 +63,33 @@
       "url": "/#/contato",
       "icons": [
         {
-          "src": "https://images.unsplash.com/photo-1505238680356-667803448bb6?auto=format&fit=crop&w=96&q=60",
+          "src": "/icons/contact-96x96.png",
           "sizes": "96x96",
-          "type": "image/jpeg"
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Art & IA Studio",
+      "short_name": "Art Studio",
+      "description": "Explorar projetos criativos com IA",
+      "url": "/#/ruta-art",
+      "icons": [
+        {
+          "src": "/icons/art-96x96.png",
+          "sizes": "96x96",
+          "type": "image/png"
         }
       ]
     }
-  ]
+  ],
+  "features": [
+    "Progressive Web App",
+    "Offline Functionality",
+    "Fast Loading",
+    "Responsive Design"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }

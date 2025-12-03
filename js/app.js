@@ -17,12 +17,12 @@ class PortfolioApp {
   initTheme() {
     this.themeBtn = document.getElementById('themeBtn');
     this.themeIcon = document.getElementById('themeIcon');
-    
-    const prefers = localStorage.getItem('theme') || 
+
+    const prefers = localStorage.getItem('theme') ||
       (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
 
     this.applyTheme(prefers);
-    
+
     this.themeBtn.addEventListener('click', () => this.toggleTheme());
   }
 
@@ -54,7 +54,7 @@ class PortfolioApp {
     window.addEventListener('resize', () => this.debounce(this.syncNavigation.bind(this), 250));
 
     this.ham.addEventListener('click', () => this.toggleMobileMenu());
-    
+
     // Close mobile menu when clicking outside
     document.addEventListener('click', (e) => {
       if (!this.ham.contains(e.target) && !this.mob.contains(e.target) && window.innerWidth < 920) {
@@ -119,7 +119,7 @@ class PortfolioApp {
     if (window.gsap) {
       gsap.from('.hero', { opacity: 0, y: 20, duration: 0.9, ease: 'power2.out' });
       gsap.from('.card', { opacity: 0, y: 14, duration: 0.9, stagger: 0.06, ease: 'power2.out' });
-      
+
       // Subtle floating animation for avatar
       gsap.to('.avatar', { y: -6, repeat: -1, yoyo: true, duration: 3, ease: 'sine.inOut' });
     }
@@ -163,21 +163,34 @@ class PortfolioApp {
   }
 
   updateCarousel() {
-    const gap = 280;
+    if (this.carouselItems.length === 0) return;
 
+    // 1. Obtém a largura real de um item (responsivo)
+    const itemWidth = this.carouselItems[0].offsetWidth;
+
+    // 2. Define o espaçamento entre os itens (deve corresponder ao 'gap' do CSS)
+    const itemGap = 20;
+
+    // 3. Calcula o deslocamento total ('shift') necessário para mover do centro de um item para o centro do próximo.
+    const shift = itemWidth + itemGap;
+
+    // 4. Aplica as transformações usando o 'shift' dinâmico
     this.carouselItems.forEach((item, i) => {
       const pos = i - this.carouselIndex;
       const abs = Math.abs(pos);
       const scale = Math.max(0.78, 1 - abs * 0.12);
       const z = -abs * 120;
-      const x = pos * gap;
 
+      // Calcula o translateX baseado no 'shift' dinâmico
+      const x = pos * shift;
+
+      // Aplica as transformações
       item.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${scale})`;
       item.style.opacity = abs > 3 ? 0 : 1;
       item.style.zIndex = this.carouselItems.length - abs;
     });
 
-    // Update indicators
+    // Atualiza indicadores (o restante do código é mantido)
     this.indicators?.forEach((indicator, i) => {
       indicator.classList.toggle('active', i === this.carouselIndex);
     });
@@ -216,7 +229,7 @@ class PortfolioApp {
 
   async handleFormSubmit(e) {
     e.preventDefault();
-    
+
     const form = e.target;
     const submitText = document.getElementById('submitText');
     const submitLoading = document.getElementById('submitLoading');
@@ -296,14 +309,14 @@ class PortfolioApp {
 
   async installPWA() {
     if (!this.deferredPrompt) return;
-    
+
     this.deferredPrompt.prompt();
     const choiceResult = await this.deferredPrompt.userChoice;
-    
+
     if (choiceResult.outcome === 'accepted') {
       console.log('PWA installed');
     }
-    
+
     this.deferredPrompt = null;
     document.getElementById('installBtn').style.display = 'none';
   }

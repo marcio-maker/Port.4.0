@@ -2,7 +2,7 @@
   "name": "Márcio Maker — Portfólio 4.0",
   "short_name": "Márcio Maker",
   "description": "Portfólio profissional de Márcio Maker - Desenvolvedor Full Stack especializado em PWA, IA e experiências digitais modernas",
-  "start_url": "./index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0b0f17",
   "theme_color": "#4f8cff",

@@ -6,16 +6,16 @@
   <title>Márcio Maker — Portfólio 4.0</title>
 
   <!-- PWA Manifest -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- GSAP -->
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 
-  <!-- Vanilla Tilt (corrigido) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <!-- Tilt -->
+  <script src="https://cdnjs.cloudflare.com/aws/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
 </head>
 
 <body>
@@ -63,7 +63,71 @@
     </div>
 
     <main class="container">
-      <!-- ...seções omitidas por brevidade... -->
+      <!-- PARALLAX HERO -->
+      <div class="parallax"></div>
+
+      <!-- ROUTED PAGES -->
+      <section id="home" class="page active">
+        <!-- Home content will be loaded here -->
+      </section>
+
+      <section id="projetos" class="page">
+        <!-- Projects content will be loaded here -->
+      </section>
+
+      <section id="sobre" class="page">
+        <!-- About content will be loaded here -->
+      </section>
+
+      <section id="blog" class="page">
+        <!-- Blog content will be loaded here -->
+      </section>
+
+      <section id="servicos" class="page">
+        <!-- Services content will be loaded here -->
+      </section>
+
+      <section id="ruta-art" class="page">
+        <!-- Art & IA Studio content will be loaded here -->
+      </section>
+
+      <section id="avatar-ia" class="page">
+        <!-- Avatar IA content will be loaded here -->
+      </section>
+
+      <section id="visagismo" class="page">
+        <!-- Visagismo content will be loaded here -->
+      </section>
+
+      <section id="colorimetria" class="page">
+        <!-- Colorimetria content will be loaded here -->
+      </section>
+
+      <section id="contato" class="page">
+        <!-- Contact content will be loaded here -->
+      </section>
+
+      <!-- PROJECT DETAIL PAGES -->
+      <section id="project-portfolio" class="page">
+        <!-- Project detail content will be loaded here -->
+      </section>
+
+      <section id="project-academy" class="page">
+        <!-- Project detail content will be loaded here -->
+      </section>
+
+      <section id="project-social" class="page">
+        <!-- Project detail content will be loaded here -->
+      </section>
+
+      <section id="project-creator" class="page">
+        <!-- Project detail content will be loaded here -->
+      </section>
+
+      <!-- ARTICLE DETAIL PAGES -->
+      <section id="article-pwa-guide" class="page">
+        <!-- Article detail content will be loaded here -->
+      </section>
     </main>
 
     <footer>
@@ -85,20 +149,9 @@
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
 
-  <!-- JavaScript (use caminhos absolutos) -->
-  <script src="/js/components.js"></script>
-  <script src="/js/router.js"></script>
-  <script src="/js/app.js"></script>
-
-  <!-- Registrar Service Worker caso não registre no app.js -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(reg => console.log('Service Worker registrado:', reg.scope))
-          .catch(err => console.warn('Erro registrando SW:', err));
-      });
-    }
-  </script>
+  <!-- JavaScript -->
+  <script src="js/components.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

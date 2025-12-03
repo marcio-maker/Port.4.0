@@ -449,100 +449,185 @@ footer {
     background-image: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1400&q=60');
   }
 }
+
 /* -------------------------------------
-   1. MOBILE FIRST: GRID SCROLLABLE & CENTERED
-   (Ativo de 0px a 767px)
+   CARROSSEL COM SETAS E DOTS
    -------------------------------------*/
 .carousel {
-  /* Container Simples: Remove 3D e paddings fixos desnecessários */
   position: relative;
-  padding: 0; 
-  perspective: unset;
-  overflow: unset;
+  padding: 20px 0 40px;
+  margin: 30px 0;
+  overflow: hidden;
 }
 
+/* TRACK - Container dos itens */
 .carousel-track {
-  display: grid;
-  grid-auto-flow: column;
-  
-  /* Largura do item: 85% da tela. Isso permite que 5% de padding em cada lado */
-  grid-auto-columns: 85%; 
-  gap: 20px; 
-  
-  /* Habilita o deslize (scroll) e o efeito de "snap" nativo */
-  overflow-x: auto;
-  scroll-snap-type: x mandatory; 
-  -webkit-overflow-scrolling: touch; /* Suaviza o scroll no iOS */
-  
-  /* Padding lateral: 5% + 85% + 10% (gap) + 5% = 105%. Ajusta o item para o centro. */
-  padding: 0 5%; 
-  
-  /* Reset de estilos 3D para evitar conflitos no mobile */
-  transform-style: unset;
-  transition: unset;
+  display: flex;
+  gap: 20px;
+  transition: transform 0.6s cubic-bezier(0.22, 0.9, 0.25, 1);
+  padding: 10px;
 }
 
+/* ITEM - Card individual */
 .carousel-item {
-  /* Linha Essencial: Centraliza o item ativo no viewport */
-  scroll-snap-align: center; 
-  min-width: unset; 
-  
-  /* Estilos Visuais */
-  background: var(--card); 
+  flex: 0 0 auto;
+  background: var(--card);
   border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
   box-shadow: 0 6px 20px rgba(2, 6, 23, .4);
   cursor: pointer;
   border: 1px solid var(--glass);
+  transition: all 0.3s ease;
   
-  /* Transição simplificada (Removendo 'opacity' e 'backface') */
-  transition: transform 0.3s, border-color 0.3s;
+  /* Tamanho consistente */
+  width: 280px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
 }
 
 .carousel-item:hover {
-  /* Efeito de hover simples e moderno */
-  transform: translateY(-4px) scale(1.02); 
+  transform: translateY(-6px);
   border-color: var(--accent);
+  box-shadow: 0 12px 30px rgba(79, 140, 255, 0.2);
 }
-/* -------------------------------------
-   2. CONTROLES: POSICIONAMENTO MOBILE
-   -------------------------------------*/
-.carousel-controls {
-  /* Centraliza as setas e indicadores */
-  position: relative; 
+
+.case-media {
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* SETAS DE NAVEGAÇÃO */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--glass);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 20px;
   display: flex;
-  justify-content: center; 
   align-items: center;
-  gap: 16px;
-  margin-top: 20px; 
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Indicadores */
-.carousel-indicators {
-  margin: 0; 
-  order: 2; /* Coloca os indicadores no meio */
+.carousel-arrow:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
 }
 
-/* Estilo dos Botões (Setas) */
-.carousel-controls .prev-btn,
-.carousel-controls .next-btn {
-    padding: 8px;
-    background: var(--glass); 
-    border-radius: 50%;
-    line-height: 1;
-    font-size: 18px;
-    transition: background 0.3s, color 0.3s;
-    /* Define a ordem das setas para centralizar os indicadores */
-    order: 1; 
-}
-.carousel-controls .next-btn {
-    order: 3; 
+.carousel-arrow.prev {
+  left: 10px;
 }
 
-.carousel-controls .prev-btn:hover,
-.carousel-controls .next-btn:hover {
-    background: var(--accent);
-    color: white;
+.carousel-arrow.next {
+  right: 10px;
+}
+
+/* DOTS (INDICADORES) */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--glass);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--accent);
+  transform: scale(1.3);
+}
+
+.carousel-dot:hover {
+  background: var(--accent);
+  transform: scale(1.2);
+}
+
+/* -------------------------------------
+   RESPONSIVIDADE
+   -------------------------------------*/
+
+/* MOBILE (até 767px) - 1 item centralizado */
+@media (max-width: 767px) {
+  .carousel-item {
+    width: 85vw;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  .carousel-arrow.prev {
+    left: 5px;
+  }
+  
+  .carousel-arrow.next {
+    right: 5px;
+  }
+}
+
+/* TABLET (768px - 1023px) - 2 itens */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .carousel-item {
+    width: calc(50% - 10px);
+    min-width: 300px;
+  }
+}
+
+/* DESKTOP (1024px+) - 3 itens */
+@media (min-width: 1024px) {
+  .carousel-item {
+    width: calc(33.33% - 14px);
+    min-width: 280px;
+  }
+}
+
+/* DESKTOP GRANDE (1200px+) - 4 itens */
+@media (min-width: 1200px) {
+  .carousel-item {
+    width: calc(25% - 15px);
+  }
+}
+
+/* Esconder setas quando não há mais itens para navegar */
+.carousel-arrow.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-arrow.disabled:hover {
+  background: var(--card);
+  color: var(--text);
+  transform: translateY(-50%) scale(1);
 }
 
 .case-media {
@@ -1046,7 +1131,7 @@ footer {
   border-radius: 50%;
   background: var(--accent);
   color: white;
-  display: flex;
+  display: flex; /* ← MANTENHA APENAS ESTA */
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -1382,50 +1467,9 @@ footer {
       grid-template-columns: 1fr;
     }
 
-    .carousel-item {
-      min-width: 220px;
+    .timeline {
+      padding-left: 0;
     }
-  }
-
- /* -------------------------------------
-   3. WEB / DESKTOP (min-width: 768px)
-   -------------------------------------*/
-@media (min-width: 768px) {
-  .carousel {
-    padding: 18px; /* Adiciona padding de volta no desktop */
-  }
-
-  .carousel-track {
-    /* Mostra 3 itens por linha */
-    grid-auto-columns: calc(33.33% - 13.33px); 
-    overflow-x: hidden; /* Remove barra de scroll */
-    scroll-snap-type: none; /* Desativa o snap */
-    padding: 0;
-    
-    /* Reativa a transição de JS para controle de setas */
-    transition: transform .6s cubic-bezier(.22, .9, .25, 1); 
-  }
-  
-  .carousel-item:hover {
-    /* Efeito de hover mais dramático (se o Vanilla-Tilt for desativado) */
-    transform: translateZ(20px); 
-  }
-  
-  .carousel-controls {
-    /* Posiciona os controles discretamente no topo (Web) */
-    position: absolute; 
-    top: 28px;
-    right: 32px;
-    margin: 0;
-    justify-content: flex-end;
-    gap: 8px;
-  }
-  
-  .carousel-indicators {
-    /* Oculta os indicadores no desktop */
-    display: none;
-  }
-}
 
   /* High DPI displays */
   @media (-webkit-min-device-pixel-ratio: 2),
@@ -1458,3 +1502,638 @@ footer {
       font-weight: normal;
     }
   }
+  }
+}
+/* Posicionar botão de tema ao lado do hamburger no mobile */
+@media (max-width: 919px) {
+  #themeBtn {
+    order: -1; /* Coloca antes do hamburger */
+    margin-right: 10px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #themeBtn span {
+    margin: 0;
+  }
+  
+  #themeBtn::after {
+    content: '';
+    display: none; /* Remove texto "Tema" no mobile */
+  }
+}
+
+@media (min-width: 920px) {
+  #themeBtn {
+    display: flex; /* Garante que aparece no desktop */
+  }
+}
+/* ----------------------
+   SERVIÇOS MELHORADOS
+   ----------------------*/
+.services-section {
+  margin: 40px 0;
+}
+
+.service-cards {
+  display: grid;
+  gap: 20px;
+  margin-top: 25px;
+}
+
+@media (min-width: 768px) {
+  .service-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.service-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px 20px;
+  border: 1px solid var(--glass);
+  transition: all 0.4s cubic-bezier(0.22, 0.9, 0.25, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 280px;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent);
+  box-shadow: 0 20px 40px rgba(79, 140, 255, 0.15);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+.service-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: white;
+  transition: transform 0.3s;
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.service-title {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.service-description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.service-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.service-feature {
+  background: var(--glass);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.service-cta {
+  margin-top: 15px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s;
+}
+
+.service-card:hover .service-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Efeito de brilho no hover */
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: transform 0.6s;
+  pointer-events: none;
+}
+
+.service-card:hover::after {
+  transform: rotate(45deg) translate(10%, 10%);
+}
+/* Animações para os cards de serviço */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-card {
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* ----------------------
+   PÁGINA DE SERVIÇOS DETALHADA
+   ----------------------*/
+.service-detail-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.service-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.service-nav-btn {
+  padding: 12px 20px;
+  background: var(--glass);
+  border: 1px solid var(--glass);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.service-nav-btn:hover {
+  background: var(--glass);
+  border-color: var(--accent);
+}
+
+.service-nav-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.service-section {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.service-section.active {
+  display: block;
+}
+
+.service-hero {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(79, 140, 255, 0.1), transparent);
+  border-radius: 16px;
+  margin-bottom: 40px;
+  border: 1px solid var(--glass);
+}
+
+.service-hero-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.features-grid {
+  display: grid;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+@media (min-width: 768px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.feature-item {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid var(--glass);
+  transition: transform 0.3s;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.service-cta-section {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid var(--glass);
+}
+/* ----------------------
+   PWA INSTALL BUTTON
+   ----------------------*/
+
+/* Container do botão de instalação */
+.pwa-install-container {
+  position: fixed;
+  bottom: 90px; /* Acima do FAB */
+  right: 20px;
+  z-index: 1099;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  
+  /* CORREÇÃO: Estado inicial escondido */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+}
+
+/* Container VISÍVEL */
+.pwa-install-container.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  display: flex; /* Garante que aparece */
+}
+
+/* Container ESCONDIDO */
+.pwa-install-container.hide {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  /* Mantém display: flex para transição suave */
+}
+
+/* Botão de instalação principal */
+#pwaInstallContainer #installBtn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(79, 140, 255, 0.3);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Botão de instalação no HEADER (botão pequeno) */
+header #installBtn {
+  padding: 8px 12px;
+  font-size: 13px;
+  background: var(--glass);
+  color: var(--text);
+  border: 1px solid var(--glass);
+}
+
+header #installBtn:hover {
+  background: var(--accent);
+  color: white;
+}
+
+#pwaInstallContainer #installBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(79, 140, 255, 0.4);
+}
+
+#pwaInstallContainer #installBtn:active {
+  transform: translateY(-1px);
+}
+
+/* Efeito de brilho no botão */
+#pwaInstallContainer #installBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s;
+}
+
+#pwaInstallContainer #installBtn:hover::before {
+  left: 100%;
+}
+
+/* Ícone no botão (opcional) */
+#pwaInstallContainer #installBtn::after {
+  content: '📱';
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+/* Botão de fechar (X) */
+.install-close-btn {
+  background: var(--card);
+  color: var(--muted);
+  border: 1px solid var(--glass);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 1;
+}
+
+.install-close-btn:hover {
+  background: var(--glass);
+  color: var(--text);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Badge indicador novo */
+.install-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--error);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 10px;
+  animation: pulse 2s infinite;
+  z-index: 2;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Tooltip explicativo */
+.install-tooltip {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background: var(--card);
+  color: var(--text);
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  width: 250px;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.5);
+  border: 1px solid var(--accent);
+  margin-bottom: 15px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 1100;
+}
+
+.install-tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.install-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  border: 8px solid transparent;
+  border-top-color: var(--card);
+}
+
+/* Container interno para posicionamento */
+.pwa-install-container > div {
+  position: relative;
+}
+
+/* Responsivo */
+@media (max-width: 767px) {
+  .pwa-install-container {
+    bottom: 80px;
+    right: 10px;
+    left: 10px;
+    align-items: center;
+  }
+  
+  .pwa-install-container > div {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  #pwaInstallContainer #installBtn {
+    padding: 12px 18px;
+    font-size: 14px;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .install-tooltip {
+    width: 280px;
+    right: 0;
+    left: 0;
+    margin: 0 auto 15px;
+  }
+  
+  .install-tooltip::after {
+    right: calc(50% - 8px);
+  }
+  
+  .install-close-btn {
+    top: -10px;
+    right: -10px;
+  }
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 360px) {
+  .install-tooltip {
+    width: 250px;
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+  
+  #pwaInstallContainer #installBtn {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}
+
+/* Animações simplificadas */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ----------------------
+   PWA INSTALL BUTTON - CORRIGIDO
+   ----------------------*/
+.pwa-install-container {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  z-index: 1099;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  
+  /* ESTADO INICIAL: FLEXÍVEL MAS INVISÍVEL */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.pwa-install-container.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.pwa-install-container.hide {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+}
+
+/* Garantir que o botão flutuante aparece */
+#floatingInstallBtn {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Botão do header */
+#headerInstallBtn {
+  padding: 8px 12px;
+  font-size: 13px;
+}

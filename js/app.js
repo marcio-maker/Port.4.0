@@ -121,27 +121,27 @@ class PortfolioApp {
       // gsap.from('.hero', { opacity: 0, y: 20, duration: 0.9, ease: 'power2.out' });
       // gsap.from('.card', { opacity: 0, y: 14, duration: 0.9, stagger: 0.06, ease: 'power2.out' });
       // gsap.to('.avatar', { y: -6, repeat: -1, yoyo: true, duration: 3, ease: 'sine.inOut' });
-      
+
       // Em vez disso, animar elementos que EXISTEM no seu index.html
       const parallax = document.querySelector('.parallax');
       if (parallax) {
-        gsap.from('.parallax', { 
-          opacity: 0, 
-          y: 30, 
-          duration: 1.2, 
+        gsap.from('.parallax', {
+          opacity: 0,
+          y: 30,
+          duration: 1.2,
           delay: 0.5,
-          ease: 'power2.out' 
+          ease: 'power2.out'
         });
       }
 
       const brand = document.querySelector('.brand');
       if (brand) {
-        gsap.from('.brand', { 
-          opacity: 0, 
-          y: -20, 
-          duration: 1, 
+        gsap.from('.brand', {
+          opacity: 0,
+          y: -20,
+          duration: 1,
           delay: 0.3,
-          ease: 'power2.out' 
+          ease: 'power2.out'
         });
       }
     }
@@ -153,92 +153,139 @@ class PortfolioApp {
 
     this.carouselIndex = 0;
     this.carouselItems = Array.from(track.children);
-    this.indicatorsContainer = document.getElementById('indicators');
+    this.dotsContainer = document.getElementById('dots');
 
-    this.initCarouselIndicators();
+    // Criar dots
+    this.createDots();
+
+    // Inicializar
     this.updateCarousel();
 
-    // Event listeners for carousel controls
+    // Event listeners
     document.getElementById('cprev')?.addEventListener('click', () => this.prevSlide());
     document.getElementById('cnext')?.addEventListener('click', () => this.nextSlide());
 
     // Auto-advance
     this.startCarouselInterval();
+
+    // Evento de redimensionamento
+    window.addEventListener('resize', () => this.updateCarousel());
   }
 
-  initCarouselIndicators() {
-    if (!this.indicatorsContainer) return;
+  // MÉTODOS FALTANTES DO CARROSSEL - ADICIONE ESTES!
+  startCarouselInterval() {
+    if (this.carouselInterval) {
+      clearInterval(this.carouselInterval);
+    }
 
-    this.carouselItems.forEach((_, i) => {
-      const indicator = document.createElement('div');
-      indicator.className = 'carousel-indicator';
-      if (i === 0) indicator.classList.add('active');
-      indicator.addEventListener('click', () => {
+    this.carouselInterval = setInterval(() => {
+      this.nextSlide();
+    }, 5000); // Muda a cada 5 segundos
+  }
+
+  resetCarouselInterval() {
+    if (this.carouselInterval) {
+      clearInterval(this.carouselInterval);
+      this.startCarouselInterval();
+    }
+  }
+
+  createDots() {
+    if (!this.dotsContainer || !this.carouselItems.length) return;
+
+    this.dotsContainer.innerHTML = '';
+    const itemsPerView = this.getItemsPerView();
+    const totalDots = Math.max(1, this.carouselItems.length - itemsPerView + 1);
+
+    for (let i = 0; i < totalDots; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Ir para slide ${i + 1}`);
+      dot.addEventListener('click', () => {
         this.carouselIndex = i;
         this.updateCarousel();
         this.resetCarouselInterval();
       });
-      this.indicatorsContainer.appendChild(indicator);
-    });
+      this.dotsContainer.appendChild(dot);
+    }
 
-    this.indicators = Array.from(this.indicatorsContainer.children);
+    this.dots = Array.from(this.dotsContainer.children);
+  }
+
+  getItemsPerView() {
+    if (window.innerWidth < 768) return 1;
+    if (window.innerWidth < 1024) return 2;
+    if (window.innerWidth < 1200) return 3;
+    return 4;
   }
 
   updateCarousel() {
-    if (this.carouselItems.length === 0) return;
+    if (!this.carouselItems || this.carouselItems.length === 0) return;
 
-    // 1. Obtém a largura real de um item (responsivo)
+    const itemsPerView = this.getItemsPerView();
+    const maxIndex = Math.max(0, this.carouselItems.length - itemsPerView);
+
+    // Limitar índice
+    if (this.carouselIndex > maxIndex) {
+      this.carouselIndex = maxIndex;
+    }
+
+    // Calcular deslocamento
     const itemWidth = this.carouselItems[0].offsetWidth;
+    const gap = 20;
+    const shift = (itemWidth + gap) * this.carouselIndex;
 
-    // 2. Define o espaçamento entre os itens (deve corresponder ao 'gap' do CSS)
-    const itemGap = 20;
+    // Aplicar transformação
+    const track = document.getElementById('track');
+    if (track) {
+      track.style.transform = `translateX(-${shift}px)`;
+    }
 
-    // 3. Calcula o deslocamento total ('shift') necessário para mover do centro de um item para o centro do próximo.
-    const shift = itemWidth + itemGap;
+    // Atualizar dots
+    if (this.dots && this.dots.length > 0) {
+      this.dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === this.carouselIndex);
+      });
+    }
 
-    // 4. Aplica as transformações usando o 'shift' dinâmico
-    this.carouselItems.forEach((item, i) => {
-      const pos = i - this.carouselIndex;
-      const abs = Math.abs(pos);
-      const scale = Math.max(0.78, 1 - abs * 0.12);
-      const z = -abs * 120;
+    // Atualizar estado das setas
+    this.updateArrows();
+  }
 
-      // Calcula o translateX baseado no 'shift' dinâmico
-      const x = pos * shift;
+  updateArrows() {
+    const prevBtn = document.getElementById('cprev');
+    const nextBtn = document.getElementById('cnext');
+    const itemsPerView = this.getItemsPerView();
+    const maxIndex = Math.max(0, this.carouselItems.length - itemsPerView);
 
-      // Aplica as transformações
-      item.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${scale})`;
-      item.style.opacity = abs > 3 ? 0 : 1;
-      item.style.zIndex = this.carouselItems.length - abs;
-    });
+    if (prevBtn) {
+      prevBtn.classList.toggle('disabled', this.carouselIndex === 0);
+    }
 
-    // Atualiza indicadores (o restante do código é mantido)
-    this.indicators?.forEach((indicator, i) => {
-      indicator.classList.toggle('active', i === this.carouselIndex);
-    });
+    if (nextBtn) {
+      nextBtn.classList.toggle('disabled', this.carouselIndex >= maxIndex);
+    }
   }
 
   prevSlide() {
-    this.carouselIndex = (this.carouselIndex - 1 + this.carouselItems.length) % this.carouselItems.length;
-    this.updateCarousel();
-    this.resetCarouselInterval();
+    const itemsPerView = this.getItemsPerView();
+    if (this.carouselIndex > 0) {
+      this.carouselIndex--;
+      this.updateCarousel();
+      this.resetCarouselInterval();
+    }
   }
 
   nextSlide() {
-    this.carouselIndex = (this.carouselIndex + 1) % this.carouselItems.length;
-    this.updateCarousel();
-    this.resetCarouselInterval();
-  }
+    const itemsPerView = this.getItemsPerView();
+    const maxIndex = Math.max(0, this.carouselItems.length - itemsPerView);
 
-  startCarouselInterval() {
-    this.carouselInterval = setInterval(() => {
-      this.nextSlide();
-    }, 5000);
-  }
-
-  resetCarouselInterval() {
-    clearInterval(this.carouselInterval);
-    this.startCarouselInterval();
+    if (this.carouselIndex < maxIndex) {
+      this.carouselIndex++;
+      this.updateCarousel();
+      this.resetCarouselInterval();
+    }
   }
 
   // CONTACT FORM
@@ -304,52 +351,160 @@ class PortfolioApp {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    window.addEventListener('scroll', () => {
+    // Função para atualizar visibilidade
+    const updateFABVisibility = () => {
       fab.style.display = window.scrollY > 300 ? 'flex' : 'none';
-    });
+    };
+
+    window.addEventListener('scroll', updateFABVisibility);
+
+    // ADICIONE ESTA LINHA: Inicializar a visibilidade
+    updateFABVisibility();
   }
 
   // PWA FUNCTIONALITY - CORREÇÃO MÍNIMA
   initPWA() {
-    this.deferredPrompt = null;
+  this.deferredPrompt = null;
+  this.installDismissed = localStorage.getItem('installDismissed') === 'true';
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      this.deferredPrompt = e;
-      document.getElementById('installBtn').style.display = 'inline-block';
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    this.deferredPrompt = e;
+
+    if (!this.installDismissed) {
+      this.showInstallPrompt();
+    }
+  });
+
+  // Botão flutuante (principal)
+const floatingInstallBtn = document.getElementById('installBtn');
+if (floatingInstallBtn) {
+  floatingInstallBtn.addEventListener('click', () => this.installPWA());
+}
+
+  // CORREÇÃO: Use o ID correto do HTML
+  const installBtn = document.getElementById('installBtn'); // ID correto
+  if (installBtn) {
+    installBtn.addEventListener('click', () => this.installPWA());
+  }
+
+  // Botão de instalar no HEADER (pequeno) - REMOVA ou ajuste
+  const headerInstallBtn = document.getElementById('headerInstallBtn');
+  if (headerInstallBtn) {
+    headerInstallBtn.addEventListener('click', () => this.installPWA());
+  }
+
+  // Botão de fechar prompt
+  const closeInstallBtn = document.getElementById('closeInstallBtn');
+  if (closeInstallBtn) {
+    closeInstallBtn.addEventListener('click', () => this.dismissInstallPrompt());
+  }
+
+  // Botão de fechar tooltip
+  const closeTooltip = document.getElementById('closeTooltip');
+  if (closeTooltip) {
+    closeTooltip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('installTooltip').classList.remove('show');
+    });
+  }
+
+  // Mostrar tooltip ao passar mouse
+  if (installBtn) {
+    installBtn.addEventListener('mouseenter', () => {
+      if (!this.installDismissed) {
+        document.getElementById('installTooltip').classList.add('show');
+      }
     });
 
-    document.getElementById('installBtn')?.addEventListener('click', () => this.installPWA());
+    installBtn.addEventListener('mouseleave', () => {
+      document.getElementById('installTooltip').classList.remove('show');
+    });
+  }
 
-    // CORREÇÃO: Mudar caminho do Service Worker
+    // CORREÇÃO: Service Worker só tenta registrar em ambiente suportado
     if ('serviceWorker' in navigator) {
-      // Verificar se estamos em ambiente suportado
-      const isLocalhost = window.location.hostname === 'localhost' || 
-                         window.location.hostname === '127.0.0.1';
-      
-      // Service Worker só funciona em HTTPS ou localhost
+      // Verifica se estamos em localhost ou HTTPS
+      const isLocalhost = window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1';
+
+      // Apenas registra se for HTTPS ou localhost
       if (window.location.protocol === 'https:' || isLocalhost) {
-        navigator.serviceWorker.register('./sw.js')  // ✅ MUDADO DE '/sw.js' PARA './sw.js'
-          .then(() => console.log('✅ Service Worker registrado com sucesso'))
-          .catch((error) => console.log('❌ Falha no registro do Service Worker:', error));
+        navigator.serviceWorker.register('./sw.js')
+          .then((registration) => {
+            console.log('✅ Service Worker registrado com sucesso:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('❌ Falha no registro do Service Worker:', error);
+          });
       } else {
-        console.log('⚠️ Service Worker não suportado em file://');
+        console.log('ℹ️ Service Worker não suportado em file:// - Execute em um servidor local');
       }
     }
   }
 
-  async installPWA() {
-    if (!this.deferredPrompt) return;
+ async installPWA() {
+  if (!this.deferredPrompt) return;
 
-    this.deferredPrompt.prompt();
-    const choiceResult = await this.deferredPrompt.userChoice;
+  this.deferredPrompt.prompt();
+  const choiceResult = await this.deferredPrompt.userChoice;
 
-    if (choiceResult.outcome === 'accepted') {
-      console.log('PWA installed');
+  if (choiceResult.outcome === 'accepted') {
+    console.log('PWA installed');
+    this.showToast('App instalado com sucesso! 🎉', 'success');
+  }
+
+  this.deferredPrompt = null;
+  
+  // CORREÇÃO: Usar querySelector mais específico
+  const installBtn = document.querySelector('#pwaInstallContainer #installBtn');
+  if (installBtn) {
+    installBtn.style.display = 'none';
+  }
+  
+  // Esconder também o container inteiro
+  const container = document.getElementById('pwaInstallContainer');
+  if (container) {
+    container.classList.remove('show');
+    container.classList.add('hide');
+  }
+}
+
+  // Métodos adicionais para a classe PortfolioApp:
+  showInstallPrompt() {
+  const container = document.getElementById('pwaInstallContainer');
+  const badge = document.getElementById('installBadge');
+  
+  if (container && !this.installDismissed) {
+    container.style.display = 'flex';
+    
+    // Mostrar após pequeno delay para animação
+    setTimeout(() => {
+      container.classList.add('show');
+      container.classList.remove('hide');
+    }, 100);
+    
+    if (badge) {
+      setTimeout(() => {
+        badge.style.display = 'none';
+      }, 10000);
+    }
+  }
+}
+
+  dismissInstallPrompt() {
+    const container = document.getElementById('pwaInstallContainer');
+    if (container) {
+      container.classList.remove('show');
+      container.classList.add('hide');
+
+      setTimeout(() => {
+        container.style.display = 'none';
+      }, 300);
     }
 
-    this.deferredPrompt = null;
-    document.getElementById('installBtn').style.display = 'none';
+    this.installDismissed = true;
+    localStorage.setItem('installDismissed', 'true');
   }
 
   // OBSERVERS FOR ANIMATIONS
@@ -430,6 +585,8 @@ class PortfolioApp {
 
   showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
+    if (!toast) return; // Adicionar verificação de segurança
+
     toast.textContent = message;
     toast.className = `toast ${type}`;
     toast.classList.add('show');

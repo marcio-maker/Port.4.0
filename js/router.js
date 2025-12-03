@@ -2,12 +2,12 @@
 class Router {
   constructor() {
     this.routes = [
-      'home', 'projetos', 'sobre', 'blog', 'servicos', 'contato', 
+      'home', 'projetos', 'sobre', 'blog', 'servicos', 'contato',
       'ruta-art', 'avatar-ia', 'visagismo', 'colorimetria',
       'project-portfolio', 'project-academy', 'project-social', 'project-creator',
       'article-pwa-guide'
     ];
-    
+
     this.init();
   }
 
@@ -19,7 +19,7 @@ class Router {
   setupEventListeners() {
     // Hash change listener
     window.addEventListener('hashchange', () => this.handleRouteChange());
-    
+
     // Link click handlers
     document.addEventListener('click', (e) => {
       const link = e.target.closest('[data-link]');
@@ -96,7 +96,7 @@ class Router {
   handleLinkClick(link) {
     const href = link.getAttribute('href');
     this.navigateTo(href);
-    
+
     // Close mobile menu if open
     if (window.innerWidth < 920) {
       window.portfolioApp?.closeMobileMenu();
@@ -109,7 +109,7 @@ class Router {
 
   routeTo(hash) {
     const routeName = (hash || '#/home').replace('#/', '');
-    
+
     // Hide all pages
     this.routes.forEach(route => {
       const element = document.getElementById(route);
@@ -221,58 +221,127 @@ class Router {
         </div>
       </div>
 
-      <h3 style="margin-top:18px">Projetos em Destaque</h3>
-      <div class="carousel card" id="carousel">
-        <div class="carousel-track" id="track">
-          <div class="carousel-item" data-tilt data-project="portfolio">
-            <h4>Portfólio 4.0</h4>
-            <p class="lead-strong">Site PWA com animações, temas e dashboard.</p>
-            <img class="case-media" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=60" alt="">
-          </div>
-          <div class="carousel-item" data-tilt data-project="academy">
-            <h4>Aha! Academy</h4>
-            <p class="lead-strong">Plataforma de cursos offline-first.</p>
-            <img class="case-media" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=900&q=60" alt="">
-          </div>
-          <div class="carousel-item" data-tilt data-project="social">
-            <h4>Social PWA</h4>
-            <p class="lead-strong">Feed com cache inteligente.</p>
-            <img class="case-media" src="https://images.unsplash.com/photo-1505238680356-667803448bb6?auto=format&fit=crop&w=900&q=60" alt="">
-          </div>
-          <div class="carousel-item" data-tilt data-project="creator">
-            <h4>Creator Studio</h4>
-            <p class="lead-strong">Ferramentas de criação com IA.</p>
-            <img class="case-media" src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=900&q=60" alt="">
-          </div>
-        </div>
-        <div class="carousel-controls">
-          <button class="btn" id="cprev">◀</button>
-          <button class="btn" id="cnext">▶</button>
-        </div>
-        <div class="carousel-indicators" id="indicators"></div>
+      <h3 style="margin: 30px 0 20px; text-align: center; font-size: 24px;">Projetos em Destaque</h3>
+<div class="carousel" id="carousel">
+  
+  <!-- Setas de navegação -->
+  <button class="carousel-arrow prev" id="cprev" aria-label="Projeto anterior">◀</button>
+  <button class="carousel-arrow next" id="cnext" aria-label="Próximo projeto">▶</button>
+  
+  <!-- Container dos itens -->
+  <div class="carousel-track" id="track">
+    <div class="carousel-item" data-project="portfolio">
+      <img class="case-media" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80" alt="Portfólio 4.0">
+      <h4 style="margin: 12px 0 6px; font-size: 18px;">Portfólio 4.0</h4>
+      <p class="lead-strong" style="margin-bottom: 12px; font-size: 14px; line-height: 1.4;">Site PWA com animações, temas e dashboard interativo.</p>
+      <div class="card-tags">
+        <span class="card-tag">PWA</span>
+        <span class="card-tag">GSAP</span>
+        <span class="card-tag">Dashboard</span>
       </div>
+    </div>
+    
+    <div class="carousel-item" data-project="academy">
+      <img class="case-media" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=400&q=80" alt="Aha! Academy">
+      <h4 style="margin: 12px 0 6px; font-size: 18px;">Aha! Academy</h4>
+      <p class="lead-strong" style="margin-bottom: 12px; font-size: 14px; line-height: 1.4;">Plataforma de cursos com funcionalidade offline-first.</p>
+      <div class="card-tags">
+        <span class="card-tag">PWA</span>
+        <span class="card-tag">Offline</span>
+        <span class="card-tag">Education</span>
+      </div>
+    </div>
+    
+    <div class="carousel-item" data-project="social">
+      <img class="case-media" src="https://images.unsplash.com/photo-1505238680356-667803448bb6?auto=format&fit=crop&w=400&q=80" alt="Social PWA">
+      <h4 style="margin: 12px 0 6px; font-size: 18px;">Social PWA</h4>
+      <p class="lead-strong" style="margin-bottom: 12px; font-size: 14px; line-height: 1.4;">Rede social com cache inteligente e notificações push.</p>
+      <div class="card-tags">
+        <span class="card-tag">PWA</span>
+        <span class="card-tag">Social</span>
+        <span class="card-tag">Cache</span>
+      </div>
+    </div>
+    
+    <div class="carousel-item" data-project="creator">
+      <img class="case-media" src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=400&q=80" alt="Creator Studio">
+      <h4 style="margin: 12px 0 6px; font-size: 18px;">Creator Studio</h4>
+      <p class="lead-strong" style="margin-bottom: 12px; font-size: 14px; line-height: 1.4;">Ferramentas de criação com IA integrada.</p>
+      <div class="card-tags">
+        <span class="card-tag">IA</span>
+        <span class="card-tag">Tools</span>
+        <span class="card-tag">Creator</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Dots (indicadores) -->
+  <div class="carousel-dots" id="dots">
+    <!-- Os dots serão gerados pelo JavaScript -->
+  </div>
+</div>
 
-      <section style="margin-top:18px">
-        <h3>Serviços</h3>
-        <div class="grid" style="margin-top:12px">
-          <div class="card" data-tilt data-service="pwa">
-            <h4>PWA Completo</h4>
-            <p class="lead-strong">Instalável, offline, rápido.</p>
-          </div>
-          <div class="card" data-tilt data-service="ia">
-            <h4>IA & Automação</h4>
-            <p class="lead-strong">Chatbots, prompts e fluxos.</p>
-          </div>
-          <div class="card" data-tilt data-service="design">
-            <h4>Design Premium</h4>
-            <p class="lead-strong">UI moderna e conversão.</p>
-          </div>
-          <div class="card" data-tilt data-service="conteudo">
-            <h4>Conteúdo & Cursos</h4>
-            <p class="lead-strong">Materiais e aulas.</p>
-          </div>
-        </div>
-      </section>
+      <div class="service-cards">
+  <!-- Serviço 1 -->
+  <a href="#/servicos#pwa" class="service-card" data-service="pwa">
+    <div class="service-icon">🚀</div>
+    <h3 class="service-title">PWA Completo</h3>
+    <p class="service-description">Aplicações web que funcionam como apps nativos: instaláveis, offline e ultrarrápidas.</p>
+    <div class="service-features">
+      <span class="service-feature">Instalável</span>
+      <span class="service-feature">Offline</span>
+      <span class="service-feature">Push Notifications</span>
+    </div>
+    <div class="service-cta">
+      Saiba mais →
+    </div>
+  </a>
+  
+  <!-- Serviço 2 -->
+  <a href="#/servicos#ia" class="service-card" data-service="ia">
+    <div class="service-icon">🤖</div>
+    <h3 class="service-title">IA & Automação</h3>
+    <p class="service-description">Chatbots inteligentes, automação de processos e soluções com Machine Learning.</p>
+    <div class="service-features">
+      <span class="service-feature">Chatbots</span>
+      <span class="service-feature">Automação</span>
+      <span class="service-feature">Machine Learning</span>
+    </div>
+    <div class="service-cta">
+      Saiba mais →
+    </div>
+  </a>
+  
+  <!-- Serviço 3 -->
+  <a href="#/servicos#design" class="service-card" data-service="design">
+    <div class="service-icon">🎨</div>
+    <h3 class="service-title">Design Premium</h3>
+    <p class="service-description">UI/UX moderno, conversão otimizada e experiências que encantam seus usuários.</p>
+    <div class="service-features">
+      <span class="service-feature">UI/UX</span>
+      <span class="service-feature">Conversão</span>
+      <span class="service-feature">Responsivo</span>
+    </div>
+    <div class="service-cta">
+      Saiba mais →
+    </div>
+  </a>
+  
+  <!-- Serviço 4 -->
+  <a href="#/servicos#conteudo" class="service-card" data-service="conteudo">
+    <div class="service-icon">📚</div>
+    <h3 class="service-title">Conteúdo & Cursos</h3>
+    <p class="service-description">Plataformas educacionais, materiais didáticos e sistemas de gestão de conteúdo.</p>
+    <div class="service-features">
+      <span class="service-feature">E-learning</span>
+      <span class="service-feature">CMS</span>
+      <span class="service-feature">Video Aulas</span>
+    </div>
+    <div class="service-cta">
+      Saiba mais →
+    </div>
+  </a>
+</div>
 
       <div class="testimonials">
         <h3>O que dizem meus clientes</h3>
@@ -281,7 +350,7 @@ class Router {
             O Márcio transformou completamente nossa presença digital. O PWA que ele desenvolveu aumentou nossas conversões em 40% e reduziu a taxa de rejeição drasticamente.
           </div>
           <div class="testimonial-author">
-            <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=100&q=60" alt="Maria Silva">
+            <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8d29tYW58ZW58MHx8MHx8fDA%3D" alt="Maria Silva">
             <div class="testimonial-info">
               <h4>Maria Silva</h4>
               <p>CEO, TechSolutions</p>
@@ -447,34 +516,115 @@ class Router {
 
   loadServicesPage(element) {
     element.innerHTML = `
-      <div class="section-header">
-        <h2>Serviços</h2>
-        <p class="lead">Soluções completas para suas necessidades digitais</p>
+    <div class="section-header">
+      <h2>Serviços Especializados</h2>
+      <p class="lead">Soluções completas para transformar sua presença digital</p>
+    </div>
+    
+    <div class="service-detail-container">
+      <!-- Navegação entre serviços -->
+      <div class="service-nav">
+        <button class="service-nav-btn active" data-service="pwa">PWA Completo</button>
+        <button class="service-nav-btn" data-service="ia">IA & Automação</button>
+        <button class="service-nav-btn" data-service="design">Design Premium</button>
+        <button class="service-nav-btn" data-service="conteudo">Conteúdo & Cursos</button>
       </div>
       
-      <div class="grid">
-        <div class="card" data-service="pwa">
-          <img class="card-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=60" alt="PWA Completo">
-          <h4>PWA Completo</h4>
-          <p class="lead-strong">Aplicações web que funcionam como apps nativos.</p>
-          <div class="card-tags">
-            <span class="card-tag">Instalável</span>
-            <span class="card-tag">Offline</span>
-            <span class="card-tag">Rápido</span>
+      <!-- Conteúdo dos serviços -->
+      <div class="service-content">
+        
+        <!-- Serviço PWA -->
+        <div id="pwa" class="service-section active">
+          <div class="service-hero">
+            <div class="service-hero-icon">🚀</div>
+            <h2>PWA Completo</h2>
+            <p class="lead">Aplicações web que funcionam como apps nativos</p>
+          </div>
+          
+          <div class="service-details">
+            <h3>O que ofereço:</h3>
+            <div class="features-grid">
+              <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <h4>Apps Instaláveis</h4>
+                <p>Aplicativos que podem ser instalados na tela inicial</p>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <h4>Performance</h4>
+                <p>Carregamento instantâneo e experiência fluida</p>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">📶</div>
+                <h4>Offline-first</h4>
+                <p>Funcionalidade mesmo sem conexão com internet</p>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🔔</div>
+                <h4>Push Notifications</h4>
+                <p>Engajamento com notificações em tempo real</p>
+              </div>
+            </div>
+            
+            <div class="service-cta-section">
+              <a href="#/contato" class="btn" data-link>Solicitar Orçamento</a>
+            </div>
           </div>
         </div>
-        <div class="card" data-service="ia">
-          <img class="card-img" src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=900&q=60" alt="IA & Automação">
-          <h4>IA & Automação</h4>
-          <p class="lead-strong">Chatbots, prompts e fluxos inteligentes.</p>
-          <div class="card-tags">
-            <span class="card-tag">IA</span>
-            <span class="card-tag">Automação</span>
-            <span class="card-tag">Chatbots</span>
-          </div>
+        
+        <!-- Serviço IA (similar aos outros) -->
+        <div id="ia" class="service-section">
+          <!-- Conteúdo do serviço IA -->
+        </div>
+        
+        <!-- Serviço Design -->
+        <div id="design" class="service-section">
+          <!-- Conteúdo do serviço Design -->
+        </div>
+        
+        <!-- Serviço Conteúdo -->
+        <div id="conteudo" class="service-section">
+          <!-- Conteúdo do serviço Conteúdo -->
         </div>
       </div>
-    `;
+    </div>
+  `;
+
+    // Adicionar lógica de navegação entre serviços
+    this.initServiceNavigation();
+  }
+
+  initServiceNavigation() {
+    const navBtns = document.querySelectorAll('.service-nav-btn');
+    const serviceSections = document.querySelectorAll('.service-section');
+
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const serviceId = btn.getAttribute('data-service');
+
+        // Atualizar botões ativos
+        navBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Mostrar seção correspondente
+        serviceSections.forEach(section => {
+          section.classList.remove('active');
+          if (section.id === serviceId) {
+            section.classList.add('active');
+          }
+        });
+      });
+    });
+
+    // Verificar se há hash na URL (ex: #/servicos#pwa)
+    const hash = window.location.hash;
+    if (hash.includes('#')) {
+      const serviceId = hash.split('#').pop();
+      const targetBtn = document.querySelector(`.service-nav-btn[data-service="${serviceId}"]`);
+      if (targetBtn) {
+        setTimeout(() => targetBtn.click(), 100);
+      }
+    }
   }
 
   loadArtStudioPage(element) {

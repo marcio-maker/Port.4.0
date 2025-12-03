@@ -117,11 +117,33 @@ class PortfolioApp {
 
   initAnimations() {
     if (window.gsap) {
-      gsap.from('.hero', { opacity: 0, y: 20, duration: 0.9, ease: 'power2.out' });
-      gsap.from('.card', { opacity: 0, y: 14, duration: 0.9, stagger: 0.06, ease: 'power2.out' });
+      // CORREÇÃO: Comentar ou remover as linhas que causam erro
+      // gsap.from('.hero', { opacity: 0, y: 20, duration: 0.9, ease: 'power2.out' });
+      // gsap.from('.card', { opacity: 0, y: 14, duration: 0.9, stagger: 0.06, ease: 'power2.out' });
+      // gsap.to('.avatar', { y: -6, repeat: -1, yoyo: true, duration: 3, ease: 'sine.inOut' });
+      
+      // Em vez disso, animar elementos que EXISTEM no seu index.html
+      const parallax = document.querySelector('.parallax');
+      if (parallax) {
+        gsap.from('.parallax', { 
+          opacity: 0, 
+          y: 30, 
+          duration: 1.2, 
+          delay: 0.5,
+          ease: 'power2.out' 
+        });
+      }
 
-      // Subtle floating animation for avatar
-      gsap.to('.avatar', { y: -6, repeat: -1, yoyo: true, duration: 3, ease: 'sine.inOut' });
+      const brand = document.querySelector('.brand');
+      if (brand) {
+        gsap.from('.brand', { 
+          opacity: 0, 
+          y: -20, 
+          duration: 1, 
+          delay: 0.3,
+          ease: 'power2.out' 
+        });
+      }
     }
   }
 
@@ -287,7 +309,7 @@ class PortfolioApp {
     });
   }
 
-  // PWA FUNCTIONALITY
+  // PWA FUNCTIONALITY - CORREÇÃO MÍNIMA
   initPWA() {
     this.deferredPrompt = null;
 
@@ -299,11 +321,20 @@ class PortfolioApp {
 
     document.getElementById('installBtn')?.addEventListener('click', () => this.installPWA());
 
-    // Register Service Worker
+    // CORREÇÃO: Mudar caminho do Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('Service Worker registered'))
-        .catch((error) => console.log('Service Worker registration failed:', error));
+      // Verificar se estamos em ambiente suportado
+      const isLocalhost = window.location.hostname === 'localhost' || 
+                         window.location.hostname === '127.0.0.1';
+      
+      // Service Worker só funciona em HTTPS ou localhost
+      if (window.location.protocol === 'https:' || isLocalhost) {
+        navigator.serviceWorker.register('./sw.js')  // ✅ MUDADO DE '/sw.js' PARA './sw.js'
+          .then(() => console.log('✅ Service Worker registrado com sucesso'))
+          .catch((error) => console.log('❌ Falha no registro do Service Worker:', error));
+      } else {
+        console.log('⚠️ Service Worker não suportado em file://');
+      }
     }
   }
 

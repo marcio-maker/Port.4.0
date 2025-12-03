@@ -2,28 +2,36 @@
   "name": "Márcio Maker — Portfólio 4.0",
   "short_name": "Márcio Maker",
   "description": "Portfólio profissional de Márcio Maker - Desenvolvedor Full Stack especializado em PWA, IA e experiências digitais modernas",
-  "start_url": "/",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0b0f17",
   "theme_color": "#4f8cff",
   "orientation": "portrait-primary",
-  "scope": "/",
+  "scope": "./",
   "lang": "pt-BR",
   "categories": ["business", "productivity", "utilities"],
+  
   "icons": [
     {
-      "src": "/icons/icon-192x192.png",
+      "src": "./icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512x512.png",
+      "src": "./icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
+  
   "screenshots": [
     {
       "src": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=640&q=60",
@@ -40,17 +48,19 @@
       "label": "Detalhes do projeto"
     }
   ],
+  
   "related_applications": [],
   "prefer_related_applications": false,
+  
   "shortcuts": [
     {
       "name": "Projetos",
       "short_name": "Projetos",
       "description": "Ver meus projetos recentes",
-      "url": "/#/projetos",
+      "url": "./index.html#/projetos",
       "icons": [
         {
-          "src": "/icons/projects-96x96.png",
+          "src": "./icons/projects-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
@@ -60,10 +70,10 @@
       "name": "Contato",
       "short_name": "Contato",
       "description": "Entre em contato comigo",
-      "url": "/#/contato",
+      "url": "./index.html#/contato",
       "icons": [
         {
-          "src": "/icons/contact-96x96.png",
+          "src": "./icons/contact-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
@@ -73,22 +83,24 @@
       "name": "Art & IA Studio",
       "short_name": "Art Studio",
       "description": "Explorar projetos criativos com IA",
-      "url": "/#/ruta-art",
+      "url": "./index.html#/ruta-art",
       "icons": [
         {
-          "src": "/icons/art-96x96.png",
+          "src": "./icons/art-96x96.png",
           "sizes": "96x96",
           "type": "image/png"
         }
       ]
     }
   ],
+  
   "features": [
     "Progressive Web App",
     "Offline Functionality",
     "Fast Loading",
     "Responsive Design"
   ],
+  
   "edge_side_panel": {
     "preferred_width": 400
   }
